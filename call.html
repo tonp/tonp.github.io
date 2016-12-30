@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>The World Bank : API How To Guide</title>
+  
+
+  <link rel="stylesheet" type="text/css" href="guide.css">
+  
+  
+ </head>
+ 
+ <body id="index">
+ <a name="call"></a>
+<h3>the call</h3> 
+<div class="center">
+
+<div class="center"> 
+
+<p>To access the World Bank API, we need to add in a few more settings to the typical Ajax method. We can configure the Ajax code to the following :
+<div class="codes">
+<pre>
+	<code>
+	$.ajax({
+		type: 'GET', 
+		url: 'http://api.worldbank.org/countries/us/indicators/NY.GDP.MKTP.CD', 
+		data: { 'date':'2010:2015', 'format':'jsonP'},
+		jsonp: 'prefix',
+		dataType: 'jsonp', 
+		success: function getResults(data){}
+	});
+	</code>
+</pre>
+
+</div>
+
+
+<p>
+	Let's discuss what's going on here. The request type is still <mark>'GET'</mark>. In the World Bank API documentation, the specification for getting each country is <mark>/countries/COUNTRY-ISO-ALPA2-CODE</mark>. In our case, we will be using the 2-Iso country code for United States, which is us.The <mark>/indicators/NY.GDP.MKTP.CD/</mark> specifies the type of indicator that we desire, which is the GDP. </p>
+	
+<p> The <mark>data</mark> field contains the data that we want to sent to the server. It will convert the field into a query string. In this case, we specified the date with the years in five year range. This will ask the server to retrieve data from 2010 to 2015. The next parameter is the <mark>format</mark>, telling the server that the response format should be <mark>'jsonp'</mark>, we will discuss about JSONP later in the next section. In the <mark>jsonp</mark> data field, we specified a special <mark>'prefix'</mark>. This is a requirement as mentioned in the World Bank API. This property will set the callback function parameter. When converted to the query string, it will result in <mark>?prefix=getResults</mark>.  The dataType that the client (browser) will be expecting back is of the format 'jsonp'. Finally, we reached the <mark>success</mark> property, which is the callback function that is called after a successful request. In the case above, we placed in the <mark>'getResults(data)'</mark> function.  </p> 
+
+<p> For now, we can implement our callback function to log the data into the console :
+
+<div class="codes">
+<pre>
+	<code>function getResults(data){
+		console.log(data); 
+	}</code>
+</pre>
+
+</div>
+
+<p>Finally, our call method is configured. Let's head on to the next section to see what our response will look like!</p> 
+
+
+
+
+
+
+
+
+
+
+<ul> 
+	<li><a href="index.html" id="home">home</a></li>
+	<li><a href="api.html" id="api" >api</a></li>
+	<li><a href="tools.html" id="tools" >tools</a></li>
+	<li><a href="call.html" id="call" class="current">call</a></li>
+	<li><a>>>></a></li>
+	<li><a href="response.html" id="response" class="anchorL">response</a></li> 
+	<li><a href="application.html" id="app" class="anchorL">application</a></li> 
+	<li><a href="demo.html" id="demo" class="anchorL">demo</a></li> 
+</ul>
+
+
+ </body>
+</html>

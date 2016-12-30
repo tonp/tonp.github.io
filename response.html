@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>The World Bank : API How To Guide</title>
+  
+
+  <link rel="stylesheet" type="text/css" href="guide.css">
+  
+  
+  
+ </head>
+ 
+ <body id="index">
+
+	
+
+
+</div>
+ 
+ 
+<a name="response"></a>
+<h3>the response</h3>
+<div class="center">
+<p> Before we can talk about the response from the World Bank API, let's talk a little bit about Ajax response formats JSON and JSONP. JSON stands for JavaScript Object Notation, its basic function is to present data in a readable format in key/value pairs. A typical JSON format will look like the following : </p> 
+<div class="codes">
+<pre> 	{ "Weather": [
+		{ "London":"grey", 
+		"Seattle":"rain" .
+		"Hong Kong": "sunny",
+		 "Berlin": "showers",
+		}], 
+		"food": {
+		"Crepes": "Udon", 
+		"Steak": "A1", 
+		"Croissant" : "Cheese"} 
+	}
+</pre>
+</div>
+<p> JSONP is JSON with "Padding". How JSONP works is that it allows HTML script tags to retrieve requested data by calling a callback function, and allows the data to be wrapped around the callback function call. For example, a data consisting of JSONP contains the following: 
+
+<div class="codes">
+<pre>	callBackFunction({ "Weather": [
+		{ "London":"grey", 
+		"Seattle":"rain" .
+		"Hong Kong": "sunny",
+		 "Berlin": "showers",
+		}], 
+		"food": {
+		"Crepes": "Udon", 
+		"Steak": "A1", 
+		"Croissant" : "Cheese"} 
+	});
+</pre>
+</div>
+
+<p>Now, here's a question, why use JSONP and not just plain old JSON? The reason being is the Same-Origin Policy. To simplified the matter, the SOP is a web security measurement that prevents scripts from accessing another script that are not from the same origin. So, if our browser wants to interact with the World Bank API server, the request will be denied since the browser server and the api servers are both different origin. When we run the following call with JSON as the format, the prevalent error will be returned: </p>
+	
+	<div class="codes">
+	<pre><center>XMLHttpRequest cannot load http://api.worldbank.org/countries/us/indicators/NY.GDP.MKTP.CD?format=json&date=2000%3A2015. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'null' is therefore not allowed access.</center></pre> </div>
+	
+	<p>Thus, to circumvent this problem, we can use JSONP. Recalled that JSONP uses HTML tags to retrieve data. From the given SOP, HTML tags are not part of the contract, so we can utilize JSONP as a way to retrieve data responses.</p>
+
+
+<p>Returning to our codes, we can now make our request with JSONP as the formatted response. We will get the following results in the console : 
+<div class="codes">
+<pre>	getResults([
+	{"page":1,"pages":1,"per_page":"50","total":6},
+	[{"indicator":{"id":"NY.GDP.MKTP.CD","value":"GDP (current US$)"},"country":{"id":"US","value":"United States"},"value":"17946996000000","decimal":"0","date":"2015"},
+	{"indicator":{"id":"NY.GDP.MKTP.CD","value":"GDP (current US$)"},"country":{"id":"US","value":"United States"},"value":"17348071500000","decimal":"0","date":"2014"},
+	{"indicator":{"id":"NY.GDP.MKTP.CD","value":"GDP (current US$)"},"country":{"id":"US","value":"United States"},"value":"16663160000000","decimal":"0","date":"2013"},
+	{"indicator":{"id":"NY.GDP.MKTP.CD","value":"GDP (current US$)"},"country":{"id":"US","value":"United States"},"value":"16155255000000","decimal":"0","date":"2012"},
+	{"indicator":{"id":"NY.GDP.MKTP.CD","value":"GDP (current US$)"},"country":{"id":"US","value":"United States"},"value":"15517926000000","decimal":"0","date":"2011"},
+	{"indicator":{"id":"NY.GDP.MKTP.CD","value":"GDP (current US$)"},"country":{"id":"US","value":"United States"},"value":"14964372000000","decimal":"0","date":"2010"}]
+	])
+</pre>
+</div>
+</p>
+<p>We can use Google Chrome Developer to open up the data that was logged: <br><br>
+<img src="consoleData.jpeg"></img></p>
+<p> The console returned two objects, <mark>0:Object</mark> and <mark>1:Array[6]</mark>. The first one carries information about pages information that we do not need to worry about. The second one contains the data that we would want. There are six items in the Array. These are the information about US GDP from year 2010-2015, with the GDP stored in <mark>value</mark>. We can use array notations to access these values. </p> 
+<p>Making slight adjustments to our callback function : 
+
+<div class="codes">
+<pre>
+	<code>function getResults(data){
+		for (var i = 0; i <= 5; i++){
+			console.log(data[1][i].date); 
+			console.log(data[1][i].value); 
+		}
+	}</code>
+</pre>
+
+</div>
+</p>
+
+<p>We get the following results in the console :  <br>
+
+<br><img src="2010_2015results.jpg" ></img></p>
+
+<p>Success! We got our data and the right set up. Now, let's add some spice to our codes. In the next section, we will put everything together to make a form that users can submit to gather any countries GDP in a specified range.</p>
+ 
+ </div>
+ 
+ 
+<ul> 
+	<li><a href="index.html" id="home">home</a></li>
+	<li><a href="api.html" id="api" >api</a></li>
+	<li><a href="tools.html" id="tools" >tools</a></li>
+	<li><a href="call.html" id="call" >call</a></li>
+	<li><a href="response.html" id="response"class="current">response</a></li> 
+	<li><a>>>></a></li>
+	<li><a href="application.html" id="app" class="anchorL">application</a></li> 
+	<li><a href="demo.html" id="demo" class="anchorL">demo</a></li> 
+</ul>
+
+
+ </body>
+</html>

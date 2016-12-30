@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>The World Bank : API How To Guide</title>
+  
+
+  <link rel="stylesheet" type="text/css" href="guide.css">
+ 
+  
+  
+ </head>
+ 
+ <body id="index">
+ 
+ 
+<a name="tools"></a>
+<h3>Web Tools</h3>
+<div class="center">
+<p>To be able to create new applications with an API, we have to have speak the language. We will be using JavaScript, HTML, jQuery and Ajax call requests. Basic understanding of JavaSript and HTML will be assumed in this guide. However, we will discuss briefly the usage of jQuery and Ajax since we will need these tools to develop a call request to the API. First, let's review the functionality of jQuery. The basic concept of jQuery is to simplified JavaScript codes to make awesome web pages more efficient and fast. Take a look at the differences between the two codes below. </p>
+<p>JavaScript
+<iframe width="100%" height="300" src="https://jsfiddle.net/tonp/y5og3po0/embedded/js,html,css,result/" allowfullscreen="allowfullscreen" frameborder="0"></iframe></p>
+
+<p>jQuery
+<iframe width="100%" height="300" src="https://jsfiddle.net/tonp/jou27nfx/embedded/js,html,css,result/" allowfullscreen="allowfullscreen" frameborder="0"></iframe></p>
+
+
+
+<p>Obvious enough, we can see that to move the dot div, jQuery uses just two lines to animate, whereas JavaScript needed a few more steps. jQuery can achieve this effect due primarily to its large JavaScript library. Codes written in jQuery pulls methods from the given JavaScript structure, and simplified them. This makes it easier to write JavaScript programs, and potentially saves programmers from developing migraines. An in depth usages about jQuery and its library will not be covered here, however, we need to familiar ourself with the basic syntax. <p> 
+
+<p> A majority of jQuery codes are <i>richly</i> filled with the dollar symbol. The most basic set-up for jQuery codes is <mark>$(selector).action()</mark>. The dollar symbol indicates that it is a jQuery code. Inside the parenthesis, we can input the selector, any element in the HTML document. And the <mark>.action()</mark> is the type of method that will be used on that element. We can take as an example, the jQuery code above. In the first function, the div  <mark>"button"</mark> is the element that will be manipulated with the <mark>.click()</mark> function. Inside that function, we set up the div object to move relative to the top down 150 pixels. Once we clicked on the button, if all goes well, the inner function will then take effect, and the overall outcome is the dot moving down. </p> 
+<p> Note : To use jQuery's library in a website, make sure to either download the jQuery bundle from its own website or add a jQuery script that is hosted by Google, which can be found <a href="https://developers.google.com/speed/libraries/" target="_blank">here</a>.
+
+<h3> Ajax Requests</h3> 
+<p> Now, let's take a look at how we are going to access the World Bank API. We need a set of tools that allows our browser to communicate to the World Bank Server. Enter the technique call Asynchronous JavaScript and XML! The name is a tad bit too long, so it is usually just call Ajax, which is not to be confused with the detergent, <i>Ajax</i>. This technique works by allowing the client-side (basically, the browser we are using) to request and retrieve information from a host server. The asynchronous part works by allowing the program to simultaneously do different tasks while communicating to the server. Then once the communication to the server is completed, a callback function will be called to received the response from the server. The callback function is important in manipulating the data we desire. Let's take a look at a typical JavaScript Ajax request : 
+
+ 
+<div class="codes"> 
+<pre> 
+	<code>function createRequest(){
+		var request = new XMLHttpRequest();
+		request.open('GET', urlHERE, true); 
+		request.onreadystatechange = function() {
+			if (request.readyState == 4){
+				if ( request.status >=200 && request.status < 400){
+					alert("It works!"); 
+				}
+				else {
+					alert("Error"); 
+				}
+			}
+			request.send(null);
+		}
+	}
+</code>
+</pre> </p>
+</div>
+
+
+<p> In JavaScript, we first have to make an <mark>XMLHttpRequest()</mark> object. Then we open up the request by setting the request method, we will mostly be retrieving information in this guide, so our request type will be <mark>'GET'</mark>. The <mark>'urlHere'</mark> will have the page that you are requesting. The boolean value stands for asynchronous (true) or not asynchronous(false), it is recommended that true is carried on for all Ajax requests. Next, we need to write out what is to be done after the request is accepted, this is typically where the callback function takes effect. We can set this up by adding the <mark>request.onreadystatechange</mark>. This tells the program which call back function is to be called once the request states are changed. Following that, we need to check if the request state is 4, this means that the request operations is finished. Then we check if the request status is between 200-400, this means that the server response is good to go. Once everything is in place, we can implement a function that will work with the response from the server. In the case above, an alert tells the user that it is working. Else if the request failed, the error message will pop up. Make sure to send the request after all the set-up, otherwise the request will not be called. </p> 
+
+<p> jQuery also have a similar method for Ajax requests. A typical jQuery call will look like the following: 
+<div class="codes">
+<pre>
+	<code>
+	$.ajax({
+		type: 'GET'
+		url: 'urlHERE',
+		dataType: 'jsonp',
+		success: callback(){
+			console.log("It works!");
+		}
+	});
+	</code>
+</pre>
+
+</div></p>
+
+<p> The method is fairly similar to the the JavaScript version. We still need to configure the method type, the host url,  dataType that the client is expecting, and the success, which is the callback function. Once everything is configured correctly, the appropriate message will log back to the console. We will be using jQuery Ajax method to make a call request to the World Bank API. </p>. 
+<p>Now that we have develop some basics tools we need, let's configure our first call to access the US's GDP from the year 2010-2015!</p>
+
+
+
+
+
+
+
+<ul> 
+	<li><a href="index.html" id="home">home</a></li>
+	<li><a href="api.html" id="api" >api</a></li>
+	<li><a href="tools.html" id="tools" class="current">tools</a></li>
+	<li><a>>>></a></li>
+	<li><a href="call.html" id="call" class="anchorL">call</a></li>
+	<li><a href="response.html" id="response" class="anchorL">response</a></li> 
+	<li><a href="application.html" id="app" class="anchorL">application</a></li> 
+	<li><a href="demo.html" id="demo" class="anchorL">demo</a></li> 
+</ul>
+
+
+ </body>
+</html>

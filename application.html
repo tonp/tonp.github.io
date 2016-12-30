@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>The World Bank : API How To Guide</title>
+  
+
+  <link rel="stylesheet" type="text/css" href="guide.css">
+
+  
+ </head>
+ 
+ <body id="index">
+ 
+
+ 
+
+
+<a name="application"></a>
+<h3>application</h3>
+<div class="center">
+<p> First, let's set up a basic HTML page with forms and buttons. The page will look like the following :</p>
+
+<p>
+<iframe width="100%" height="300" src="https://jsfiddle.net/tonp/2w112k8r/embedded/html,result/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+</p>
+
+<p>Next,we will implement an <mark>.on()</mark> function on the button. Once that button is clicked, the appropriate variables will store the submitted inputs. Concatenate the URL string, and called the Ajax request :
+<div class="codes"> 
+<pre> $('form').on('submit', function(event){
+	
+	var from = document.getElementById("inputFrom").value; 
+	var to = document.getElementById("inputTo").value; 
+	var country = document.getElementById("inputCountry").value; 
+	
+	var path = 'http://api.worldbank.org/countries/'
+	var indicator = '/indicators/NY.GDP.MKTP.CD'
+	var url = path + country+ indicator;
+
+	$.ajax({
+		type: 'GET', 
+		url: url, 
+		data: { 'date': from + ':' + to, 'format':'jsonP'},
+		jsonp: 'prefix',
+		dataType: 'jsonp', 
+		success: function getResults(data){
+			tableResults(data); 
+		}
+	});
+  
+  event.preventDefault();
+
+});</pre>
+</div>
+
+<p>Once the request is successful, we can transfer the data into <mark>tableResults(data)</mark>. At the very end, we will implement a <mark>.preventDefault()</mark> that stop the browser from refreshing into a new page. Next, we adjust our <mark>tableResults(data)</mark> that will create a table and pull out the data to the right field : </p>
+ 
+ <div class="codes"> 
+ <pre> 
+ 
+function tableResults(data){
+	
+	var table = document.createElement('table');
+	table.id = "myTable";
+	table.border = 1;
+	
+	var from = document.getElementById("inputFrom").value; 
+	var to = document.getElementById("inputTo").value; 
+	
+	// Total years of data to output
+	var totalYrs = to-from;
+	
+	// Create Header
+	var trName =  document.createElement('tr'); 
+	var th0 = document.createElement('th');
+	th0.colSpan = 2;
+	th0.textContent = "Country: " + data[1][0].country.value;
+	trName.append(th0); 
+	table.appendChild(trName); 
+	
+	// Create Year/GDP Header
+	var tr = document.createElement('tr'); 
+	var th1 = document.createElement('th');
+	var th2 = document.createElement('th');
+	th1.textContent = "Year"; 
+	th2.textContent = "GDP (Current US$)"; 
+	tr.appendChild(th1); 
+	tr.appendChild(th2);
+	table.appendChild(tr); 
+	
+	// Append results to table
+	for (var i = 0; i <= totalYrs; i++){
+		var TR = document.createElement('tr');
+		var td1 = document.createElement('td');
+		var td2 = document.createElement('td');
+		td1.textContent = data[1][i].date;
+		td2.textContent = data[1][i].value;
+		TR.appendChild(td1); 
+		TR.appendChild(td2); 
+		table.appendChild(TR);
+	}
+	
+	document.getElementById("output").appendChild(table);
+}
+
+</pre>
+</div>
+<p> In this segment, we are implementing a table to the body of the HTML page. We first need to find out how many years the user has prompted. Then we created three headers. One for the country name, that spans 2 columns. The other two to indicate the Year and the Current GDP in US dollars. Finally, we loop through the data and append the appropriate data to the table. And viola! A readable table is now made for a country's GDP. </p><p>Check out the demo in the next page!</p>
+
+
+
+<ul> 
+	<li><a href="index.html" id="home">home</a></li>
+	<li><a href="api.html" id="api" >api</a></li>
+	<li><a href="tools.html" id="tools" >tools</a></li>
+	<li><a href="call.html" id="call" >call</a></li>
+	<li><a href="response.html" id="response">response</a></li> 
+	<li><a href="application.html" id="app" class="current">application</a></li>
+<li><a>>>></a></li>	
+	<li><a href="demo.html" id="demo" class="anchorL">demo</a></li> 
+</ul>
+
+
+ </body>
+</html>
