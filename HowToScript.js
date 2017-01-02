@@ -4,7 +4,7 @@ $('form').on('submit', function(event){
 	var to = document.getElementById("inputTo").value; 
 	var country = document.getElementById("inputCountry").value; 
 	
-	var path = 'https://api.worldbank.org/countries/'
+	var path = 'http://api.worldbank.org/countries/'
 	var indicator = '/indicators/NY.GDP.MKTP.CD'
 	var url = path + country+ indicator;
 
